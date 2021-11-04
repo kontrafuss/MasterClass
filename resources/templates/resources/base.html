@@ -1,0 +1,25 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" media="all" href="{% static "css/style.css" %}">
+    <link rel="stylesheet" media="all" href="{% static "css/print.css" %}">
+    <title>{% block title %}Bavarian Bass Camp{% endblock %}</title>
+
+    {% block head %}{% endblock %}
+</head>
+
+<body>
+    <div id="content-top">
+        {% block top %}{% endblock %}
+    </div>
+
+    <div id="content">
+        {% block content %}{% endblock %}
+    </div>
+    
+    <div id="footer">
+      {% block footer %}{% endblock %}
+    </div>
+</body>
+</html>

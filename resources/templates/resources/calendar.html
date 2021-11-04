@@ -1,0 +1,178 @@
+{% extends "resources/base_sidebar.html" %}
+{% load static %}
+
+{% block head %}
+    <meta charset='utf-8' />
+
+    <link href='{% static 'fullcalendar/core/main.css' %}' rel='stylesheet' />
+    <link href='{% static 'fullcalendar/daygrid/main.css' %}' rel='stylesheet' />
+    <link href='{% static 'fullcalendar/timegrid/main.css' %}' rel='stylesheet' />
+    <link href='{% static 'jquery-ui/jquery-ui.min.css' %}' rel="stylesheet">
+    <link href='{% static 'fontawesome/css/all.css' %}' rel="stylesheet">
+
+    <script src='{% static 'jquery/jquery-3.4.1.min.js' %}'></script>
+    <script src='{% static 'jquery-ui/jquery-ui.min.js' %}'></script>
+
+{# TODO use minified versions #}
+    <script src='{% static 'fullcalendar/core/main.js' %}'></script>
+    <script src='{% static 'fullcalendar/daygrid/main.js' %}'></script>
+    <script src='{% static 'fullcalendar/timegrid/main.js' %}'></script>
+    <script src='{% static 'fullcalendar/interaction/main.js' %}'></script>
+    <script src='{% static 'fullcalendar/resource-common/main.js' %}'></script>
+    <script src='{% static 'fullcalendar/resource-daygrid/main.js' %}'></script>
+    <script src='{% static 'fullcalendar/resource-timegrid/main.js' %}'></script>
+
+    <script src='{% static 'resources/calendar_interface.js' %}'></script>
+    
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        var calendarEl = document.getElementById('calendar');
+        let calendar = new FullCalendar.Calendar(calendarEl, {
+          plugins: [ 'resourceTimeGrid', 'interaction' ],
+          defaultView: 'resourceTimeGridDay',
+          header: {
+            left: '',
+            right: 'prev,next,today',
+            center: 'title'
+          },
+          allDaySlot: false,
+          resources: '{% url 'resources-by-role-json' primary_role.id %}',
+          // resources: '{% static 'resdemo.json' %}',
+          events: '{% url 'events-by-role-json' primary_role.id %}',
+          // events: '{% static 'demo.json' %}',
+          minTime: '08:00',
+          locale: 'de',
+          timeZone: 'UTC',
+          defaultDate: '2020-02-25',
+          editable: true,
+          slotDuration: '00:30:00',
+          snapDuration: '00:15:00',
+          
+          eventRender: function(info) {
+            if (info.isMirror) return;
+            $(info.el).find('.fc-content')
+              .append('<div class="cal-button"><a href="' +
+                info.event.extendedProps['edit_url'] +
+                '" class="cal-edit-link"><i class="far fa-edit"></i></a></div>');
+          },
+
+          eventDrop: function(info) {
+            var event = info.event;
+            data = {
+                id: event.id, 
+                start: event.start.toISOString(), 
+                end: event.end.toISOString()
+            }
+            if (info.oldResource && info.newResource) {
+              data.removeResource = info.oldResource.id;
+              data.resourceIds = info.newResource.id;
+            }
+            $.ajax({
+              data: data,
+              success:function(response){  },
+              complete:function(){ calendar.getEventSources()[0].refetch(); },
+              error:function (xhr, textStatus, thrownError){ alert(thrownError);}
+            });
+          },
+          eventResize: function(info) {
+            var event = info.event;
+            $.ajax({
+              data: { 
+                id: event.id, 
+                start: event.start.toISOString(),
+                end: event.end.toISOString()
+              },
+              success:function(response){  },
+              complete:function(){ calendar.getEventSources()[0].refetch(); },
+              error:function (xhr, textStatus, thrownError){ alert(thrownError);}
+            });
+          },
+          drop: function(info) {
+            var durationEl = document.getElementById('duration-select');
+            var duration = durationEl.options[durationEl.selectedIndex].value * 1000;
+            var end = new Date(info.date.getTime() + duration);
+
+            evt = { 
+                start: info.date.toISOString(),
+                end: end.toISOString()
+            };
+
+            if (info.draggedEl.dataset.resourceId) {
+              evt.resourceIds = info.draggedEl.dataset.resourceId + "," + info.resource.id;
+            } else {
+              evt.is_global = 1;
+            }
+
+
+            $.ajax({
+              data: evt,
+              success:function(response){  },
+              complete:function(){ calendar.getEventSources()[0].refetch(); },
+              error:function (xhr, textStatus, thrownError){ alert(thrownError);}
+            });
+          },
+          droppable: true
+        });
+
+        csrfsetup();
+        calendar.render();
+
+        resourcesEl = document.getElementById('event-prototypes');
+        new FullCalendarInteraction.Draggable(resourcesEl, {
+          itemSelector: '.draggable',
+          eventData: function(eventEl) {
+            return {
+              resourceIds: [eventEl.dataset.resourceId],
+              isGlobal: [eventEl.dataset.global],
+              title: [eventEl.innerText],
+              create: false
+            };
+          }
+        });
+        $('#resources-list').accordion({
+          heightStyle: 'content'
+        });
+      });
+    </script>
+{% endblock %}
+
+{% block sidebar %}
+  <label for="duration">Dauer</label>
+  <select id="duration-select" name="duration">
+    <option value="1800">30 Minuten</option>
+    <option value="2700">45 Minuten</option>
+    <option value="3600">60 Minuten</option>
+  </select>
+
+  <div id="event-prototypes">
+  <div class="cal-sidebar-resources cal-sidebar-event-global draggable" data-global="1">Event</div>
+
+  {% if resources %}
+    {% regroup resources by role as roles %}
+
+    <div id="resources-list" class="cal-sidebar-list roles">
+    {% for role in roles %}
+      <h3 class="cal-sidebar-role">{{ role.grouper.plural_label }}</h3>
+      <div class="cal-sidebar-resources-list">
+      {% for resource in role.list %}
+        <div class="cal-sidebar-resources draggable" data-resource-id="{{resource.id}}">
+          {{resource.label}}
+          <div class="cal-button"><a href="{% url 'admin:resources_resource_change' resource.id %}" class="cal-edit-link"><i class="far fa-edit"></i></a></div>
+        </div>
+      {% endfor %}
+      </div>
+    {% endfor %}
+  </div>
+  {% else %}
+    <p>No resources defined</p>
+  {% endif %}
+
+  </div>
+{% endblock %}
+
+{% block content %}
+    <form method="post">
+      {% csrf_token %}
+      <div id="calendar"></div>
+    </form>
+{% endblock %}

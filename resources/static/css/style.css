@@ -1,0 +1,130 @@
+html {
+	font-family: sans-serif;
+	font-size: 10pt;
+}
+
+body {
+	margin: 20mm;
+}
+
+a, a:visited {
+	color: #173;
+}
+
+#sidebar {
+	position: fixed;
+	left: 0;
+	top: 0;
+	width: 240px;
+	height: 100%;
+	overflow-y: scroll;
+	padding: 10px 10px;
+}
+
+#content-top {
+	
+}
+
+#content-top {
+	
+}
+
+#footer {
+	
+}
+
+
+
+
+/* timetable */
+
+table.resources-timetable {
+	border: thin solid gray;
+}
+
+table.resources-timetable tr {
+	margin-bottom: 4px;
+}
+
+table.resources-timetable td {
+	vertical-align: top;
+}
+
+
+.col-event-time {
+	width: 8em;
+}
+
+.col-event-details {
+	width: 20em;
+}
+
+
+.event-time {
+	font-weight: bold;
+}
+
+.event-label {
+	font-weight: bold;
+}
+
+.event-dependency-raum {
+	font-style: italic;
+}
+
+.event-dependency-ensemble {
+	font-weight: bold;
+}
+
+
+
+
+/* calendar */
+
+#calendar {
+	margin-left: 240px;
+}
+
+.cal-sidebar-list {
+}
+
+.cal-sidebar-role {
+	margin-top: 12px;
+	font-weight: bold;
+}
+
+.cal-sidebar-resources {
+	position: relative;
+	background-color: #44c;
+	padding: 4px;
+	border-radius: 4px;
+	color: white;
+	margin: 1px 0;
+}
+
+.cal-sidebar-event-global {
+	background-color: #472 !important;
+}
+
+.draggable {
+}
+
+.cal-button {
+	position: absolute;
+	right: 4px;
+	top: 0;
+	z-index: 3;
+}
+
+a.cal-edit-link {
+	color: white !important;
+	font-size: 11px;
+	overflow: hidden;
+}
+
+
+hr.page-break {
+	border: none;
+	page-break-after: always;
+	margin-bottom: 64px;
+}

@@ -1,0 +1,18 @@
+
+{% if resources %}
+  {% regroup resources by role as roles %}
+
+  <ul class="roles">
+  {% for role in roles %}
+    <li>{{ role.grouper }}
+      <ul class="resource">
+        {% for resource in role.list %}
+          <li>{{resource.label}}</li>
+        {% endfor %}
+      </ul>
+    </li>
+  {% endfor %}
+  </ul>
+{% else %}
+  <p>No resources defined</p>
+{% endif %}

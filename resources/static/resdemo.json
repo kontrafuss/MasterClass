@@ -1,0 +1,51 @@
+[
+	{
+		"id": 1,
+		"label": "Hendrik Fuß",
+		"description": "",
+		"role_id": 1,
+		"title": "Hendrik Fuß"
+	},
+	{
+		"id": 2,
+		"label": "Nele Weißmann",
+		"description": "",
+		"role_id": 1,
+		"title": "Nele Weißmann"
+	},
+	{
+		"id": 3,
+		"label": "Georg Karger",
+		"description": "",
+		"role_id": 1,
+		"title": "Georg Karger"
+	},
+	{
+		"id": 4,
+		"label": "Claus Freudenstein",
+		"description": "",
+		"role_id": 1,
+		"title": "Claus Freudenstein"
+	},
+	{
+		"id": 5,
+		"label": "Michelle O'Reilly",
+		"description": "",
+		"role_id": 1,
+		"title": "Michelle O'Reilly"
+	},
+	{
+		"id": 6,
+		"label": "Karola Piel",
+		"description": "",
+		"role_id": 1,
+		"title": "Karola Piel"
+	},
+	{
+		"id": 7,
+		"label": "Prof. Petru Iuga",
+		"description": "",
+		"role_id": 1,
+		"title": "Prof. Petru Iuga"
+	}
+]

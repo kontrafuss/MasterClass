@@ -1,0 +1,58 @@
+{% extends "resources/base_output.html" %}
+
+{% block title %}Stundenplan für {{ resource.label }}{% endblock %}
+
+{% block content %}
+  <h1 class="resource resource-{{ resource.role|lower }}">{{ resource.label }}</h1>
+
+  <div class="resource-descendants">
+  {% for res in descendants %}
+    {% if res.id != resource.id %}
+      <div class="resource resource-{{ res.role|lower }}">{{ res.label }}</div>
+    {% endif %}
+  {% endfor %}
+  </div>
+
+  {% if resource.description %}
+    <div class="resource resource-description">
+      {{ resource.description }}
+    </div>
+  {% endif %}
+
+  {% regroup events by day as days %}
+
+  {% for day in days %}
+    <h2 class="date">{{ day.grouper|date:"l, d. F Y" }}</h2>
+    <table class="resources-timetable">
+      <tbody>
+        {% for event in day.list %}
+          <tr>
+            <td class="col-event-time">
+              <div class="event-time">
+                {{ event.start|date:"G:i" }}&ndash;{{ event.end|date:"G:i" }}
+              </div>
+            </td>
+            <td class="col-event-details">
+              {% if event.label %}
+                <div class="event-label">{{ event.label }}</div>
+              {% endif %}
+              {% for d in event.dependencies.all %}
+                {% regroup d.descendants by role as roles %}
+                {% for role in roles %}
+                  <div class="event-dependency event-dependency-{{ role.grouper.label|lower }}">
+                    {% for dependency in role.list %}
+                      {% if dependency.id != resource.id %}
+                        <span class="resource-label">{{ dependency.label }}</span>
+                        {% if not forloop.last %}, {% endif %}
+                      {% endif %}
+                    {% endfor %}
+                  </div>
+                {% endfor %}
+              {% endfor %}
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% endfor %}
+{% endblock %}

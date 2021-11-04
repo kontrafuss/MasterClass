@@ -1,0 +1,54 @@
+{% include "output-banner.html" %}
+
+<h2 class="resource resource-{{ resource.role|lower }}">{{ resource.label }}</h1>
+
+<div class="resource-descendants">
+{% for res in descendants %}
+  {% if res.id != resource.id %}
+    <div class="resource resource-{{ res.role|lower }}">{{ res.label }}</div>
+  {% endif %}
+{% endfor %}
+</div>
+
+{% if resource.description %}
+  <div class="resource resource-description">
+    {{ resource.description }}
+  </div>
+{% endif %}
+
+
+
+{% for day in events_by_day %}
+  <h2 class="date">{{ day.date|date:"l, d. F Y" }}</h2>
+  
+    <table class="resources-timetable">
+      <tbody>
+        {% for event in day.events %}
+          <tr>
+            <td class="col-event-time">
+              <div class="event-time">
+                {{ event.start|date:"G:i" }}&ndash;{{ event.end|date:"G:i" }}
+              </div>
+            </td>
+            <td class="col-event-details">
+              {% if event.label %}
+                <div class="event-label">{{ event.label }}</div>
+              {% endif %}
+
+              {% for d in event.dependencies %}
+                  <div class="event-dependency event-dependency-{{ d.role|lower }}">
+                    {% for child in d.resources %}
+                      {{ child.label }}{% if not forloop.last %}, {% endif %}
+                    {% endfor %}
+                  </div>
+              {% endfor %}
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  
+{% endfor %}
+
+
+{% include "sponsors.html" %}

@@ -1,0 +1,139 @@
+[
+	{
+		"id": 6,
+		"label": "",
+		"start": "2020-02-26T16:00:00Z",
+		"end": "2020-02-26T16:30:00Z",
+		"is_global": false,
+		"title": "Hendrik Fuß",
+		"resourceId": 1
+	},
+	{
+		"id": 6,
+		"label": "",
+		"start": "2020-02-26T16:00:00Z",
+		"end": "2020-02-26T16:30:00Z",
+		"is_global": false,
+		"title": "Ensemble 1",
+		"resourceId": 11
+	},
+	{
+		"id": 7,
+		"label": "",
+		"start": "2020-02-26T16:30:00Z",
+		"end": "2020-02-26T17:00:00Z",
+		"is_global": false,
+		"title": "Claus Freudenstein",
+		"resourceId": 4
+	},
+	{
+		"id": 7,
+		"label": "",
+		"start": "2020-02-26T16:30:00Z",
+		"end": "2020-02-26T17:00:00Z",
+		"is_global": false,
+		"title": "Gunther Rissmann",
+		"resourceId": 13
+	},
+	{
+		"id": 9,
+		"label": "",
+		"start": "2020-02-26T16:30:00Z",
+		"end": "2020-02-26T17:00:00Z",
+		"is_global": false,
+		"title": "Hendrik Fuß",
+		"resourceId": 1
+	},
+	{
+		"id": 9,
+		"label": "",
+		"start": "2020-02-26T16:30:00Z",
+		"end": "2020-02-26T17:00:00Z",
+		"is_global": false,
+		"title": "Tim Fuß",
+		"resourceId": 9
+	},
+	{
+		"id": 10,
+		"label": "",
+		"start": "2020-02-26T16:45:00Z",
+		"end": "2020-02-26T17:45:00Z",
+		"is_global": false,
+		"title": "Nele Weißmann",
+		"resourceId": 2
+	},
+	{
+		"id": 10,
+		"label": "",
+		"start": "2020-02-26T16:45:00Z",
+		"end": "2020-02-26T17:45:00Z",
+		"is_global": false,
+		"title": "Ensemble 1",
+		"resourceId": 11
+	},
+	{
+		"id": 11,
+		"title": "Abendessen",
+		"start": "2020-02-26T18:00:00Z",
+		"end": "2020-02-26T19:00:00Z",
+		"resourceIds": [1,2,3,4,5,6,7],
+		"color": "#472"
+	},
+	{
+		"id": 12,
+		"title": "Frühstück",
+		"start": "2020-02-27T08:00:00Z",
+		"end": "2020-02-27T09:00:00Z"
+	},
+	{
+		"id": 13,
+		"label": "Warm-Up",
+		"start": "2020-02-27T09:00:00Z",
+		"end": "2020-02-27T09:30:00Z",
+		"is_global": false,
+		"title": "Kaisersaal",
+		"resourceId": 14
+	},
+	{
+		"id": 14,
+		"title": "Mittagessen",
+		"start": "2020-02-27T12:00:00Z",
+		"end": "2020-02-27T13:00:00Z"
+	},
+	{
+		"id": 15,
+		"title": "Abendessen",
+		"start": "2020-02-27T18:00:00Z",
+		"end": "2020-02-27T19:00:00Z"
+	},
+	{
+		"id": 20,
+		"title": "Schülerkonzert",
+		"start": "2020-02-27T19:00:00Z",
+		"end": "2020-02-27T21:00:00Z"
+	},
+	{
+		"id": 16,
+		"title": "Frühstück",
+		"start": "2020-02-28T08:00:00Z",
+		"end": "2020-02-28T09:00:00Z"
+	},
+	{
+		"id": 17,
+		"title": "Generalprobe",
+		"start": "2020-02-28T09:00:00Z",
+		"end": "2020-02-28T10:30:00Z"
+	},
+	{
+		"id": 18,
+		"title": "Abschlusskonzert",
+		"start": "2020-02-28T10:30:00Z",
+		"end": "2020-02-28T12:00:00Z"
+	},
+	{
+		"id": 19,
+		"title": "Mittagessen und Abreise",
+		"start": "2020-02-28T12:00:00Z",
+		"end": "2020-02-28T13:00:00Z"
+	}
+]

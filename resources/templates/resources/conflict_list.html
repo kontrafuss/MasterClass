@@ -1,0 +1,24 @@
+{% extends "resources/base.html" %}
+
+{% block content %}
+{% if conflicts %}
+<h1>Konflikte</h1>
+
+<table class="conflicts">
+  <tbody>
+    {% for conflict in conflicts %}
+    <tr>
+      <td class="conflict conflict-resource">{{ conflict.resource }}</td>
+      <td class="conflict conflict-date">{{ conflict.first_event.start|date }}</td>
+      <td class="conflict conflict-event">
+        {{ conflict.first_event.start|time }}&ndash;{{ conflict.first_event.end|time }}
+      </td>
+      <td class="conflict conflict-event">
+        {{ conflict.second_event.start|time }}&ndash;{{ conflict.second_event.end|time }}
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endif %}
+{% endblock %}

@@ -81,8 +81,11 @@ table.resources-timetable td {
 
 /* calendar */
 
-#calendar {
+#maincontent {
 	margin-left: 240px;
+}
+
+#calendar {
 }
 
 .cal-sidebar-list {

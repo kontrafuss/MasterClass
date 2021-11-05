@@ -30,7 +30,6 @@ class EventAdmin(admin.ModelAdmin):
                 request.GET.get('source') == 'calendar'):
             
             role = request.GET.get('role')
-            print ("Role %s" % role)
             response['location'] = reverse('calendar', args=(role,))
 
         return response
@@ -38,3 +37,4 @@ class EventAdmin(admin.ModelAdmin):
 admin.site.register(Role)
 admin.site.register(Resource, ResourceAdmin)
 admin.site.register(Event, EventAdmin)
+admin.site.register(Project)

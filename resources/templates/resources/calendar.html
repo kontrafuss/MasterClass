@@ -43,7 +43,7 @@
           minTime: '08:00',
           locale: 'de',
           timeZone: 'UTC',
-          defaultDate: '2020-02-25',
+          defaultDate: '{{project.start_date|date:'Y-m-d'}}',
           editable: true,
           slotDuration: '00:30:00',
           snapDuration: '00:15:00',
@@ -137,21 +137,14 @@
 {% endblock %}
 
 {% block sidebar %}
-  <label for="duration">Dauer</label>
-  <select id="duration-select" name="duration">
-    <option value="1800">30 Minuten</option>
-    <option value="2700">45 Minuten</option>
-    <option value="3600">60 Minuten</option>
-  </select>
-
   <div id="event-prototypes">
   <div class="cal-sidebar-resources cal-sidebar-event-global draggable" data-global="1">Event</div>
 
   {% if resources %}
-    {% regroup resources by role as roles %}
+    {% regroup resources by role as event_roles %}
 
     <div id="resources-list" class="cal-sidebar-list roles">
-    {% for role in roles %}
+    {% for role in event_roles %}
       <h3 class="cal-sidebar-role">{{ role.grouper.plural_label }}</h3>
       <div class="cal-sidebar-resources-list">
       {% for resource in role.list %}
@@ -171,8 +164,25 @@
 {% endblock %}
 
 {% block content %}
-    <form method="post">
-      {% csrf_token %}
-      <div id="calendar"></div>
-    </form>
+    <div id="maincontent">
+      <div class="toolbar">
+      {% for role in roles %}
+        <a class="ui-button" href="{% url 'calendar' role=role.id %}">{{role.plural_label}}</a>
+      {% endfor %}
+
+      <label for="duration">Dauer</label>
+      <select id="duration-select" name="duration">
+        <option value="1800">30 Minuten</option>
+        <option value="2700">45 Minuten</option>
+        <option value="3600">60 Minuten</option>
+      </select>
+
+      <label for="show_globals">Globale Ereignisse</label>
+      <input type="checkbox" name="show_globals" checked="checked"/>
+      </div>
+      <form method="post">
+        {% csrf_token %}
+        <div id="calendar"></div>
+      </form>
+    </div>
 {% endblock %}

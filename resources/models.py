@@ -96,23 +96,7 @@ class Event(models.Model):
 
 
 
-    # for resource in Resource.objects.all():
-    #     related_resources = resource.ancestors()
-    #     events = list( Event.objects.filter(dependencies__in=related_resources).order_by('start') )
-    #
-    #     previous_event = None
-    #     for event in events:
-    #         if (previous_event):
-    #             gap = event.start - previous_event.end
-    #
-    #             if (gap < timedelta(0)):
-    #                 conflicts.append({
-    #                     'resource' : resource,
-    #                     'first_event' : previous_event,
-    #                     'second_event' : event,
-    #                 })
-    #
-    #         previous_event = event
-    #
-    # return conflicts
-
+class Project(models.Model):
+    label = models.CharField(max_length=32)
+    start_date = models.DateField()
+    end_date = models.DateField()

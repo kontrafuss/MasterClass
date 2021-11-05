@@ -8,28 +8,20 @@ from .models import *
 from datetime import timedelta
 
 
-def find_conflicts():
-    conflicts = []
 
-    for resource in Resource.objects.all():
-        related_resources = resource.ancestors()
-        events = list( Event.objects.filter(dependencies__in=related_resources).order_by('start') )
+DEFAULT_ROLE = 1
 
-        previous_event = None
-        for event in events:
-            if (previous_event):
-                gap = event.start - previous_event.end
-                
-                if (gap < timedelta(0)):
-                    conflicts.append({
-                        'resource' : resource,
-                        'first_event' : previous_event,
-                        'second_event' : event,
-                    })
+def edit_url(id, role):
+    if role is None:
+        role = DEFAULT_ROLE
 
-            previous_event = event
+    return "%s?source=calendar&role=%s" % (
+            reverse('admin:resources_event_change', args=(id,)),
+            role )
 
-    return conflicts
+def delete_url(id):
+    return reverse('admin:resources_event_delete', args=(id,))
+
 
 class CalendarView(ListView):
     template_name = 'resources/calendar.html'
@@ -43,6 +35,8 @@ class CalendarView(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['primary_role'] = get_object_or_404(Role, pk=self.kwargs['role'])
+        context['roles'] = Role.objects.all()
+        context['project'] = Project.objects.get(pk=1)
         return context
 
     def post(self, request, *args, **kwargs):
@@ -66,7 +60,6 @@ class CalendarView(ListView):
         if ('resourceIds' in request.POST):
             dependencies = map(int, request.POST['resourceIds'].split(','))
             for id in dependencies: event.dependencies.add(id)
-
 
         # TODO allow changing primary resource
 
@@ -219,8 +212,10 @@ class EventsJSON(ListView):
             primary_role = get_object_or_404(Role, pk=kwargs['role'])
             primary_resources = [r.id for r in Resource.objects.filter(role=primary_role.id)]
         else:
+            primary_role = Role()
             primary_resources = []
         resource_labels = { r.id : r.label for r in Resource.objects.all() }
+        label_fn = lambda res : resource_labels[res.id] # TODO fail-safe
 
         json = []
         for event in self.get_queryset():
@@ -243,7 +238,7 @@ class EventsJSON(ListView):
             conflicts = event.find_conflicts()
             if conflicts:
                 cal_event['color'] = '#f22'
-                # TODO place conflict data, so that it can be rendered as a tool tip or similar
+                cal_event['conflicts'] = '\n'.join(map(label_fn, conflicts))
 
             if event.label:
                 cal_event['title'] = event.label
@@ -251,10 +246,8 @@ class EventsJSON(ListView):
                 secondary_resources = filter(lambda id: id not in primary_resources, dependencies)
                 cal_event['title'] = ', '.join(map(lambda id: resource_labels[id], secondary_resources))
 
-            cal_event['edit_url'] = "%s?source=calendar&role=%s" % (
-                reverse('admin:resources_event_change', args=(event.id,)),
-                primary_role.id )
-            cal_event['delete_url'] = reverse('admin:resources_event_delete', args=(event.id,))
+            cal_event['edit_url'] = edit_url(event.id, primary_role.id)
+            cal_event['delete_url'] = delete_url(event.id)
 
             json.append(cal_event)
 
@@ -274,6 +267,30 @@ class ResourcesJSON(ListView):
 
 
 # RESOURCE_ID EVENT_ID_1 EVENT_ID_2 OVERLAP_START OVERLAP_END
+
+def find_conflicts():
+    conflicts = []
+
+    for resource in Resource.objects.all():
+        related_resources = resource.ancestors()
+        events = list( Event.objects.filter(dependencies__in=related_resources).order_by('start') )
+
+        previous_event = None
+        for event in events:
+            if (previous_event):
+                gap = event.start - previous_event.end
+                
+                if (gap < timedelta(0)):
+                    conflicts.append({
+                        'resource' : resource,
+                        'first_event' : previous_event,
+                        'second_event' : event,
+                    })
+
+            previous_event = event
+
+    return conflicts
+
 
 # TODO unused
 class ConflictList(TemplateView):

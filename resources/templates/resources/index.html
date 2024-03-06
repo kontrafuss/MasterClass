@@ -1,0 +1,31 @@
+{% extends "resources/base_output.html" %}
+{% load static %}
+
+
+{% block head %}
+  <link rel="stylesheet" media="all" href='{% static 'css/nav.css' %}'>
+  <link href='{% static 'fontawesome/css/all.css' %}' rel="stylesheet">
+{% endblock %}
+
+{% block title %}Bass Camp Home{% endblock %}
+
+{% block content %}
+  {% include "output-banner.html" %}
+
+  <nav>
+    <ul class="nav">
+      <li class="navitem">
+        <a href="{% url 'calendar' role=13 %}">
+          <div class="navitem-icon"><i class="far fa-calendar"></i></div>
+          <div class="navitem-label">Kalender</div>
+        </a>
+      </li>
+      <li class="navitem">
+        <a href="{% url 'timetable-index' %}">
+          <div class="navitem-icon"><i class="far fa-clock"></i></div>
+          <div class="navitem-label">Stundenpl&auml;ne</div>
+        </a>
+      </li>
+    </ul>
+  </nav>
+{% endblock %}

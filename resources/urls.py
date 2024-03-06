@@ -4,7 +4,7 @@ from . import views
 from .views import *
 
 urlpatterns = [
-#    path('', views.index, name='index'),
+    path('', Home.as_view(), name='home'),
     path('timetable/', TimetableIndex.as_view(), name='timetable-index'),
     path('timetable/<int:resource>', Timetable.as_view(), name='timetable'),
     path('timetable/role/<int:role>', Timetable.as_view(), name='timetable-all'),

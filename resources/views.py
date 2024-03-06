@@ -292,6 +292,9 @@ def find_conflicts():
     return conflicts
 
 
+class Home(TemplateView):
+    template_name = 'resources/index.html'
+
 # TODO unused
 class ConflictList(TemplateView):
     template_name = 'resources/conflict_list.html'

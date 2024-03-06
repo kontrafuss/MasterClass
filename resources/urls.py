@@ -1,10 +1,11 @@
 from django.urls import path
+from django.views.generic import TemplateView
 
 from . import views
 from .views import *
 
 urlpatterns = [
-    path('', Home.as_view(), name='home'),
+    path('', TemplateView.as_view(template_name = 'resources/index.html'), name='home'),
     path('timetable/', TimetableIndex.as_view(), name='timetable-index'),
     path('timetable/<int:resource>', Timetable.as_view(), name='timetable'),
     path('timetable/role/<int:role>', Timetable.as_view(), name='timetable-all'),

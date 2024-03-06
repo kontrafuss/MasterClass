@@ -1,0 +1,20 @@
+ul.nav {
+	list-style-type: none;
+}
+
+.navitem {
+	float: left;
+	width: 160px;
+	text-align: center;
+}
+
+.navitem a {
+	text-decoration: none;
+	color: black;
+}
+
+.navitem-icon {
+	font-size: 36pt;
+	color: gray;
+}
+

@@ -12,6 +12,8 @@ urlpatterns = [
     path('calendar/<int:role>', CalendarView.as_view(), name='calendar'),
     path('conflicts/<int:resource>', ConflictList.as_view()),
 
+    path('resource/<int:pk>', ResourceView.as_view(), name="resource"),
+
     path('json/events/', EventsJSON.as_view(), name='events-json'),
     path('json/events/<int:role>', EventsJSON.as_view(), name='events-by-role-json'),
     path('json/resources/<int:role>', ResourcesJSON.as_view(), name='resources-by-role-json'),

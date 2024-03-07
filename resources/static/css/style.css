@@ -131,3 +131,74 @@ hr.page-break {
 	page-break-after: always;
 	margin-bottom: 64px;
 }
+
+
+
+/* resource view */
+
+.resource-container {
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+}
+
+.resource-object-row {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	margin-bottom: 4pt;
+}
+
+.resource-role {
+	text-transform: uppercase;
+	text-align: center;
+	font-size: 8pt;
+	color: #aaa;
+	text-shadow: 1px 1px #333;
+	margin-bottom: 2px;
+}
+
+.resource-object, .resource-dependency {
+	border-radius: 4pt;
+	padding: 8pt;
+	box-shadow: 2px 2px 4px;
+	margin-right: 12px;
+}
+
+.resource-object {
+	background-color: #44c;
+}
+
+.resource-dependency {
+	background-color: #472;	
+}
+
+.resource-label {
+	display: block;
+	color: white;
+	font-weight: bold;
+	text-align: center;
+	cursor: inherit;
+}
+
+ul.resource-dependencies {
+	list-style-type: none;
+}
+
+li.resource-dependency {
+/*	margin-bottom: 12px;*/
+}
+
+.resource-drop-zone {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin-top: 14px;
+	margin-bottom: 14px;
+	padding: 16px;
+	min-width: 200px;
+	min-height: 60px;
+	border: dashed gray medium;
+	text-align: center;
+	color: gray;
+}

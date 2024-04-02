@@ -6,62 +6,73 @@
     <link href='{% static 'fullcalendar/daygrid/main.css' %}' rel='stylesheet' />
     <link href='{% static 'fullcalendar/timegrid/main.css' %}' rel='stylesheet' />
     <link href='{% static 'fontawesome/css/all.css' %}' rel="stylesheet">
+
+    <script src='{% static 'jquery/jquery-3.4.1.min.js' %}'></script>
+    <script src='{% static 'resources/resource-edit-ui.js' %}'></script>
 {% endblock %}
 
 {% block content %}
+{% csrf_token %}
+
 <div class="resource-container">
   <div class="resource-object-row">
     <div class="resource-object">
       <div class="resource-role">{{ resource.role }}</div>
       <label class="resource-label">{{ resource.label }}</label>
-      {% if resource.description %}
-        <div class="resource-description">{{ resource.description }}</div>
+      {% if editable %}
+        <input type="text" id="label" class="inplace-edit resource-label-edit"></textarea>
       {% endif %}
     </div>
     {% if editable %}
-      <button class="edit-resource"><i class="far fa-edit"></i></button>
-      <button class="delete-resource"><i class="far fa-trash"></i></button>
+      <button class="edit-resource" data-resource="{{ resource.id }}"><i class="far fa-edit"></i></button>
+      <button class="delete-resource" data-resource="{{ resource.id }}"><i class="far fa-trash"></i></button>
     {% endif %}
   </div>
 
-  {% if resource.dependencies %}
-    <ul class="resource-dependencies">
-    {% for dependency in resource.dependencies.all %}
-      <li class="resource resource-object-row">
-        <a href="{% url 'resource' dependency.id %}">
-          <div class="resource-dependency">
-            <label class="resource-label">{{ dependency.label }}</label>
-          </div>
-        </a>
-        {% if editable %}
-          <button class="remove-dependency"><i class="far fa-minus"></i></button>
-        {% endif %}
-      </li>
-    {% endfor %}
-    {% if editable %}
-      <li class="resource-object-row">
-        <div class="resource-drop-zone">
-          <i class="far fa-plus"></i>
-          <div>Abhängigkeit hinzufügen</div>
-        </div>
-      </li>
-    {% endif %}
-    </ul>
-  {% endif %}
-
-  {% if parents %}
-    <header>erscheint in:</header>
-    <ul>
-      {% for parent in parents %}
-        <li class="resource resource-object-row">
-          <a href="{% url 'resource' parent.id %}">
+    {% if resource.dependencies %}
+      <ul class="resource-dependencies">
+      {% for dependency in resource.dependencies.all %}
+        <li id="{{ dependency.id }}" class="resource resource-object-row">
+          <a href="{% url 'resource' dependency.id %}">
             <div class="resource-dependency">
-              <label class="resource-label">{{ parent.label }}</label>
+              <label class="resource-label">{{ dependency.label }}</label>
             </div>
           </a>
+          {% if editable %}
+            <button class="remove-dependency" data-url="{% url 'resource-dependency' resource.id dependency.id %}" onClick="removeDependency(this.dataset.url);"><i class="far fa-minus"></i></button>
+          {% endif %}
         </li>
       {% endfor %}
-    </ul>
-  {% endif %}
-</div>
+      {% if editable %}
+        <li class="resource-object-row">
+          <div class="resource-drop-zone">
+            <i class="far fa-plus"></i>
+            <div>Abhängigkeit hinzufügen</div>
+          </div>
+        </li>
+      {% endif %}
+      </ul>
+    {% endif %}
+
+    {% if resource.description %}
+      <h3>Beschreibung</h3>
+      <div class="resource-description">{{ resource.description }}</div>
+    {% endif %}
+
+    {% if parents %}
+      <h3>erscheint in:</h3>
+      <ul>
+        {% for parent in parents %}
+          <li class="resource resource-object-row">
+            <a href="{% url 'resource' parent.id %}">
+              <div class="resource-dependency">
+                <div class="resource-role">{{ parent.role}}</div>
+                <label class="resource-label">{{ parent.label }}</label>
+              </div>
+            </a>
+          </li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+  </div>
 {% endblock %}

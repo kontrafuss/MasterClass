@@ -24,6 +24,12 @@ class Resource(models.Model):
     def __str__(self):
         return self.label
 
+    def addDependency(self, dependent_resource):
+        self.dependencies.add(dependent_resource)
+
+    def removeDependency(self, dependent_resource):
+        self.dependencies.remove(dependent_resource)
+
     def ancestors(self):
         # TODO return list of objects instead of ids
         return [r.id for r in Resource.objects.raw(

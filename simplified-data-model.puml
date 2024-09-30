@@ -1,0 +1,24 @@
+@startuml
+class Resource {
+    label
+    description
+    role
+    dependencies
+}
+Resource o--> "0..*" Resource : dependencies
+
+class Event {
+    label
+    start
+    end
+    is_global
+    dependencies
+}
+Event o-r-> "0..*" Resource : dependencies
+
+class Role {
+    label
+}
+Resource --> "1" Role
+
+@enduml
